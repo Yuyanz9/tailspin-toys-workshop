@@ -13,6 +13,7 @@ Tailspin Toys is a crowdfunding platform for games with a developer theme. The p
 Development commands are defined in `package.json`: npm runs Astro for the dev server, static build, and preview. The `predev` and `prebuild` npm hooks run the TypeScript database migration and seed tasks in `db/`, writing to the gitignored `tailspin.db` file.
 
 Game cards on the home page show each game's star rating out of 5, or "No rating yet" when its rating is null.
+The home page catalog can be filtered by one or more categories and by publisher; category selections use OR matching and combine with the publisher filter.
 
 ## Using this template
 
