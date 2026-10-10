@@ -1,6 +1,26 @@
 import { test, expect, type Response } from '@playwright/test';
+import { getDatabase } from '../src/lib/db';
+import { getAllGames } from '../src/lib/games';
 
 test.describe('Game Listing and Navigation', () => {
+  test('should display each game rating out of five on the list page', async ({ page }) => {
+    const games = await getAllGames(getDatabase());
+
+    await page.goto('/');
+    await expect(page.getByTestId('game-card-rating')).toHaveCount(games.length);
+
+    for (const game of games) {
+      const card = page.getByTestId('game-card').filter({
+        has: page.getByRole('heading', { name: game.title, exact: true }),
+      });
+      const rating = card.getByTestId('game-card-rating');
+      await expect(rating).toHaveText(
+        game.starRating === null ? 'No rating yet' : `${game.starRating} / 5`,
+      );
+      await expect(rating).toBeVisible();
+    }
+  });
+
   test('should display games with titles on index page', async ({ page }) => {
     await test.step('Navigate to homepage', async () => {
       await page.goto('/');
